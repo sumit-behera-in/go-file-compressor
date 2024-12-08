@@ -1,4 +1,4 @@
-module github.com/sumit-behera-in/go_cli_template
+module github.com/sumit-behera-in/go_file_compressor
 
 go 1.23
 

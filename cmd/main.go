@@ -4,29 +4,21 @@ import (
 	"log"
 	"os"
 
-	"github.com/sumit-behera-in/go_cli_template/cmds"
+	"github.com/sumit-behera-in/go_file_compressor/cmds"
 	"github.com/urfave/cli/v2"
 )
 
 const (
-	version = "1.2.1-template"
+	version = "1.0.0"
 )
 
 func main() {
 	app := &cli.App{
-		Name:    "go_cli_template",
-		Usage:   "This is a template used to create cli applications",
+		Name:    "go_file_compressor",
+		Usage:   "This is a go library used to compress images, videos and documents.",
 		Version: version,
 		Commands: []*cli.Command{
-			cmds.Command(),
-		},
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:     "flag",
-				Usage:    "Global flag",
-				Value:    "default value",
-				Required: true,
-			},
+			cmds.Compress(),
 		},
 		Before: func(ctx *cli.Context) error {
 			// what to do before app execution
