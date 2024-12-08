@@ -2,6 +2,7 @@ package cmds
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -27,14 +28,29 @@ func Compress() *cli.Command {
 		},
 		Action: func(ctx *cli.Context) error {
 			fPath := ctx.String("file")
+			outputPath := ctx.String("out")
 			file := compressor.File{}
 
 			file.FileName = filepath.Base(fPath)
 			var err error
 			if file.File, err = os.ReadFile(fPath); err != nil {
-				println(err.Error())
-				return errors.New("The file in the file path not found")
+				return errors.New("the file in the file path not found")
 			}
+			file = compressor.Compress(file)
+			if outputPath == "" {
+				outputPath, err = GetDefaultDownloadPath()
+				if err != nil {
+					return err
+				}
+			}
+
+			outputPath += string(filepath.Separator) + "compressed_" + file.FileName
+
+			err = os.WriteFile(outputPath, file.File, 0666)
+			if err != nil {
+				return err
+			}
+			fmt.Printf("File %s successfully compressed to %s\n", file.FileName, outputPath)
 			return nil
 		},
 	}
