@@ -1,8 +1,11 @@
-module github.com/sumit-behera-in/go_cli_template
+module github.com/sumit-behera-in/go_file_compressor
 
 go 1.23
 
-require github.com/urfave/cli/v2 v2.27.5
+require (
+	github.com/h2non/bimg v1.1.9
+	github.com/urfave/cli/v2 v2.27.5
+)
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.5 // indirect
