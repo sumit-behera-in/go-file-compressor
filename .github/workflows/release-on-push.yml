@@ -1,0 +1,63 @@
+name: Release Go CLI
+
+on:
+  push:
+    branches:
+      - main # Trigger on pushes to the main branch
+
+permissions:
+  contents: write # Allows pushing to repository content (for release creation)
+  id-token: write # Allows the creation of GitHub release
+  actions: write # Required for actions to push data and create releases
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_NAME: goCLITemplate # Define the application name here
+      APP_VERSION: 1.2.1-template # Define the application version
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Go environment
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23" # Adjust Go version as needed
+
+      # Step 3: Set up environment variables for cross-compilation
+      - name: Set environment variables
+        run: |
+          echo "GITHUB_REF=${GITHUB_REF}" >> $GITHUB_ENV
+          echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
+
+      # Step 4: Build binaries for multiple platforms
+      - name: Build binaries
+        run: |
+          make build-all
+
+      # Step 5: Upload built binaries as artifacts
+      - name: Upload binaries
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-binaries
+          path: bin/
+
+      # Step 6: Create a new release with built binaries
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: |
+            bin/${{ env.APP_NAME }}-linux
+            bin/${{ env.APP_NAME }}-darwin
+            bin/${{ env.APP_NAME }}-windows.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ env.APP_VERSION }}
+          name: v${{ env.APP_VERSION }}
+          body: |
+            Automated release for commit ${{ github.sha }}
+          prerelease: false
