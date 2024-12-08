@@ -1,6 +1,11 @@
 package cmds
 
 import (
+	"errors"
+	"os"
+	"path/filepath"
+
+	"github.com/sumit-behera-in/go_file_compressor/compressor"
 	"github.com/urfave/cli/v2"
 )
 
@@ -21,6 +26,15 @@ func Compress() *cli.Command {
 			},
 		},
 		Action: func(ctx *cli.Context) error {
+			fPath := ctx.String("file")
+			file := compressor.File{}
+
+			file.FileName = filepath.Base(fPath)
+			var err error
+			if file.File, err = os.ReadFile(fPath); err != nil {
+				println(err.Error())
+				return errors.New("The file in the file path not found")
+			}
 			return nil
 		},
 	}
