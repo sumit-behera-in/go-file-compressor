@@ -36,7 +36,12 @@ func Compress() *cli.Command {
 			if file.File, err = os.ReadFile(fPath); err != nil {
 				return errors.New("the file in the file path not found")
 			}
-			file = compressor.Compress(file)
+
+			file, err = compressor.Compress(file)
+			if err != nil {
+				return err
+			}
+
 			if outputPath == "" {
 				outputPath, err = GetDefaultDownloadPath()
 				if err != nil {
