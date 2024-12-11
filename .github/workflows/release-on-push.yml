@@ -42,26 +42,14 @@ jobs:
           sudo apt-get install -y libvips-dev pkg-config
           make build-all
 
-      # Step 5: Install UPX for binary compression
-      - name: Install UPX
-        run: |
-          sudo apt-get install -y upx
-
-      # Step 6: Compress built binaries using UPX
-      - name: Compress binaries
-        run: |
-          upx --ultra-brute --lzma bin/${{ env.APP_NAME }}-linux
-          upx --ultra-brute --lzma bin/${{ env.APP_NAME }}-darwin
-          upx --ultra-brute --lzma bin/${{ env.APP_NAME }}-windows.exe
-
-      # Step 7: Upload compressed binaries as artifacts
+      # Step 5: Upload compressed binaries as artifacts
       - name: Upload compressed binaries
         uses: actions/upload-artifact@v3
         with:
           name: compressed-binaries
           path: bin/
 
-      # Step 8: Create a new release with compressed binaries
+      # Step 6: Create a new release with compressed binaries
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
