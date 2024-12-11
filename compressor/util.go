@@ -1,6 +1,5 @@
 package compressor
 
-const (
-	imageFileType = "img"
-	videoFileType = "vid"
+var (
+	tempVideoDir = "temp/"
 )
