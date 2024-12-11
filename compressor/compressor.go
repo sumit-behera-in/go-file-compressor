@@ -17,7 +17,7 @@ func Compress(file File) (File, error) {
 	switch fileExtension {
 	case ".jpg", ".jpeg", ".png", ".webp", ".bmp":
 		return ImageCompress(file)
-	case ".mp4":
+	case ".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".ogg", ".3gp", ".wmv", ".mpg":
 		return VideoCompress(file)
 	}
 
