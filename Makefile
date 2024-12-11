@@ -59,16 +59,19 @@ build-linux: test
 	set GOOS=linux 
 	set GOARCH=amd64 
 	go build -ldflags="-s -w" -trimpath -o $(BUILD_DIR)/$(APP_NAME)-linux ./cmd/
+	upx --ultra-brute --lzma $(BUILD_DIR)/$(APP_NAME)-linux
 
 build-darwin: test
 	set GOOS=darwin 
 	set GOARCH=amd64 
 	go build -ldflags="-s -w" -trimpath -o $(BUILD_DIR)/$(APP_NAME)-darwin ./cmd/
+	upx --ultra-brute --lzma $(BUILD_DIR)/$(APP_NAME)-darwin
 
 build-windows: test
 	set GOOS=windows 
 	set GOARCH=amd64 
 	go build -ldflags="-s -w" -trimpath -o $(BUILD_DIR)/$(APP_NAME)-windows.exe ./cmd/
+	upx --ultra-brute --lzma $(BUILD_DIR)/$(APP_NAME)-windows.exe
 
 # Help target to list all commands
 help:
