@@ -40,6 +40,11 @@ func ImageCompress(inputFile File) (File, error) {
 		return inputFile, err
 	}
 
+	if outputFile.File, err = CompressBytes(outputFile.File); err != nil {
+		log.Println("Image Compress to .gz Failed")
+		return outputFile, err
+	}
+
 	return outputFile, nil
 }
 
@@ -97,6 +102,11 @@ func VideoCompress(inputFile File) (File, error) {
 	}
 	if err = os.Remove(outputPath); err != nil {
 		panic(err.Error())
+	}
+
+	if outputData, err = CompressBytes(outputData); err != nil {
+		log.Println("Image Compress to .gz Failed")
+		return File{FileName: inputFile.FileName, File: outputData}, err
 	}
 
 	// Return the compressed video
