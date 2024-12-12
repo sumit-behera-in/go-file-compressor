@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	version = "1.0.1"
+	version = "1.0.2"
 )
 
 func main() {
@@ -19,17 +19,7 @@ func main() {
 		Version: version,
 		Commands: []*cli.Command{
 			cmds.Compress(),
-		},
-		Before: func(ctx *cli.Context) error {
-			// what to do before app execution
-			return nil
-		},
-		Action: func(ctx *cli.Context) error {
-			return nil
-		},
-		After: func(ctx *cli.Context) error {
-			// what to do after app execution
-			return nil
+			cmds.DeCompress(),
 		},
 	}
 
