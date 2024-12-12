@@ -6,7 +6,8 @@ import (
 	"io"
 )
 
-// compressBytes compresses the input data and returns the compressed []byte.
+// CompressBytes() compresses the input data and returns the compressed []byte.
+// Always use the .gz extension at the end to avoid corruption.
 func CompressBytes(inputData []byte) ([]byte, error) {
 	var compressedBuffer bytes.Buffer
 
@@ -29,7 +30,8 @@ func CompressBytes(inputData []byte) ([]byte, error) {
 	return compressedBuffer.Bytes(), nil
 }
 
-// decompressBytes decompresses the input gzip []byte and returns the decompressed data.
+// DecompressBytes() decompresses the input gzip []byte and returns the decompressed data.
+// Provide a .gz file and receive the corresponding decompressed file as the result.
 func DecompressBytes(compressedData []byte) ([]byte, error) {
 	compressedBuffer := bytes.NewReader(compressedData)
 	gzipReader, err := gzip.NewReader(compressedBuffer)

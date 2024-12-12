@@ -1,7 +1,6 @@
 package compressor
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -11,19 +10,35 @@ import (
 	ffmpeg_go "github.com/u2takey/ffmpeg-go"
 )
 
+// Compress() is designed to optimally compress any file, with the final output being a .gz file.
 func Compress(file File) (File, error) {
 	fileExtension := filepath.Ext(file.FileName)
 
+	var err error
+
 	switch fileExtension {
 	case ".jpg", ".jpeg", ".png", ".webp", ".bmp":
-		return ImageCompress(file)
+		if file, err = ImageCompress(file); err != nil {
+			return file, err
+		}
 	case ".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".ogg", ".3gp", ".wmv", ".mpg":
-		return VideoCompress(file)
+		if file, err = VideoCompress(file); err != nil {
+			return file, err
+		}
 	}
 
-	return file, errors.New("unsupported file format")
+	if file.File, err = CompressBytes(file.File); err != nil {
+		log.Println("Image Compress to .gz Failed")
+		return file, err
+	}
+
+	return file, nil
+
 }
 
+// ImageCompress() is designed to optimally compress image files, with the final
+// output remaining in image format. Please ensure that only the following image
+// formats are used: ".jpg", ".jpeg", ".png", ".webp", ".bmp".
 func ImageCompress(inputFile File) (File, error) {
 
 	outputFile := File{}
@@ -40,14 +55,12 @@ func ImageCompress(inputFile File) (File, error) {
 		return inputFile, err
 	}
 
-	if outputFile.File, err = CompressBytes(outputFile.File); err != nil {
-		log.Println("Image Compress to .gz Failed")
-		return outputFile, err
-	}
-
 	return outputFile, nil
 }
 
+// VideoCompress() is designed to optimally compress video files, with the final output
+// remaining in video format. Please ensure that only the following video formats are
+// used: ".mp4", ".avi", ".mov", ".mkv", ".webm", ".flv", ".ogg", ".3gp", ".wmv", ".mpg".
 func VideoCompress(inputFile File) (File, error) {
 
 	fileExt := filepath.Ext(inputFile.FileName)
