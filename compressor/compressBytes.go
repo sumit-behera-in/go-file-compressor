@@ -17,13 +17,13 @@ func CompressBytes(inputData []byte) ([]byte, error) {
 	// Write data to the gzip writer
 	_, err := gzipWriter.Write(inputData)
 	if err != nil {
-		return nil, err
+		return inputData, err
 	}
 
 	// Close the writer to flush remaining data
 	err = gzipWriter.Close()
 	if err != nil {
-		return nil, err
+		return inputData, err
 	}
 
 	return compressedBuffer.Bytes(), nil
@@ -42,7 +42,7 @@ func DecompressBytes(compressedData []byte) ([]byte, error) {
 	var decompressedBuffer bytes.Buffer
 	_, err = io.Copy(&decompressedBuffer, gzipReader)
 	if err != nil {
-		return nil, err
+		return compressedData, err
 	}
 
 	return decompressedBuffer.Bytes(), nil
