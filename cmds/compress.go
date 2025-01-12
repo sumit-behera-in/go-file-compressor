@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/sumit-behera-in/go_file_compressor/compressor"
+	"github.com/sumit-behera-in/go-file-compressor/compressor"
 	"github.com/urfave/cli/v2"
 )
 

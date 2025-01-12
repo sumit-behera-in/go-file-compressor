@@ -1,4 +1,4 @@
-# go_file_compressor
+# go-file-compressor
 A Go library for compressing images, videos, and documents, featuring a user-friendly CLI interface for seamless interaction. If no output path is provided, the compressed file will be saved to the default download folder of your operating system.
 
 ## Features
